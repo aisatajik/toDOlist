@@ -18,18 +18,19 @@ const search = document.getElementById("search");
 
 const displayTask = (taskArray) => {
   table.innerHTML = "";
+
   taskArray.forEach((task) => {
     const tr = document.createElement("tr");
 
     const id = document.createElement("td");
-    const name = id.cloneNode(); /* = document.createElement("td");*/
+    const name = id.cloneNode();
     const category = id.cloneNode();
     const completed = id.cloneNode();
+    const action = id.cloneNode();
 
     id.textContent = task.id;
     name.textContent = task.name;
     category.textContent = task.category;
-    // completed.textContent = task.completed;
 
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
@@ -41,11 +42,23 @@ const displayTask = (taskArray) => {
     });
 
     completed.appendChild(checkbox);
+
     if (task.completed) {
       name.style.textDecoration = "line-through";
     }
 
-    tr.append(id, name, category, completed);
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "Delete";
+
+    deleteButton.addEventListener("click", () => {
+      const index = tasks.findIndex((item) => item.id === task.id);
+      tasks.splice(index, 1);
+      displayTask(tasks);
+    });
+
+    action.appendChild(deleteButton);
+
+    tr.append(id, name, category, completed, action);
 
     table.appendChild(tr);
   });
